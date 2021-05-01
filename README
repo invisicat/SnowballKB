@@ -1,0 +1,17 @@
+# SnowballKB
+
+Plugin made for Peace. Jartex Network
+
+Config:
+- kbModifier:
+     - vertical: integer | Y axis modifer
+     - horizontal: integer | X axis modifier
+-cooldown:
+     - enabled: boolean | Enable cooldowns
+     - timer: integer | Cooldown timer
+     - message_config:
+          - enabled: boolean | enable messages
+          - title: string | Message title
+		  
+Permissions:
+ - snowballkb.reloadconfig | Reloads config

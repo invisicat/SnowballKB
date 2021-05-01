@@ -1,0 +1,11 @@
+# 1 vertical and horizontal is vanilla KB. Positive Number = Backwards KB, Negative Number = Forwards KB
+kbModifier:
+  vertical: 1
+  horizontal: 1
+cooldown:
+  enabled: false
+  #timer is in seconds
+  timer: 0
+  message_config:
+    enabled: false
+    title: "You are on cooldown! Stop that!"

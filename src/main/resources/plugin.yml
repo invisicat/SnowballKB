@@ -1,0 +1,9 @@
+name: SnowballKB
+version: ${project.version}
+main: dev.ricecx.snowballkb.snowballkb.SnowballKB
+api-version: 1.8.8
+commands:
+  reloadconfig:
+    description: "Reload Config"
+    usage: /reloadconfig
+    permission: SnowballKB.reloadconfig
