@@ -1,7 +1,5 @@
 # SnowballKB
 
-Plugin made for Peace. Jartex Network
-
 Config:
 - kbModifier:
      - vertical: integer | Y axis modifer
