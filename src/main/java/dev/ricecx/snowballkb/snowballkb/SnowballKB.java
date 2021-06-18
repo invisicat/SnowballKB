@@ -2,6 +2,7 @@ package dev.ricecx.snowballkb.snowballkb;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import dev.ricecx.snowballkb.snowballkb.metrics.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -31,6 +32,8 @@ public class SnowballKB extends JavaPlugin implements Listener
         this.getCommand("reloadconfig").setExecutor(this);
         Bukkit.getServer().getPluginManager().registerEvents((Listener)this, (Plugin)this);
         this.getLogger().info(String.valueOf(this.getDescription().getName()) + " enabled");
+        int pluginId = 11728;
+        Metrics metrics = new Metrics(this, 11728);
     }
 
     public void onDisable() {
