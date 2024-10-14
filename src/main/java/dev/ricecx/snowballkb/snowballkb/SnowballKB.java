@@ -13,12 +13,10 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
-public class SnowballKB extends JavaPlugin implements Listener
-{
+public class SnowballKB extends JavaPlugin implements Listener {
     public static SnowballKB plugin;
     public static FileConfiguration config;
     public final Table<Player, String, Long> cooldowns = HashBasedTable.create();
@@ -29,28 +27,25 @@ public class SnowballKB extends JavaPlugin implements Listener
         SnowballKB.config.options().copyDefaults(true);
         this.saveConfig();
         this.getCommand("reloadconfig").setExecutor(this);
-        Bukkit.getServer().getPluginManager().registerEvents((Listener)this, (Plugin)this);
-        this.getLogger().info(String.valueOf(this.getDescription().getName()) + " enabled");
-    }
-
-    public void onDisable() {
-        this.getLogger().info(String.valueOf(this.getDescription().getName()) + " disabled");
+        Bukkit.getServer().getPluginManager().registerEvents(this, this);
     }
 
     public void reloadConfiguration() {
         this.reloadConfig();
         SnowballKB.config = this.getConfig();
     }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         try {
             reloadConfiguration();
             sender.sendMessage(ChatColor.GREEN + "[SnowballKB] Config has been reloaded!");
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             sender.sendMessage(ChatColor.DARK_RED + "[SnowballKB] Error! Check console for more details.");
         }
         return true;
     }
+
     @EventHandler
     public void onEntityDamageEntity(final EntityDamageByEntityEvent event) {
 
@@ -63,30 +58,27 @@ public class SnowballKB extends JavaPlugin implements Listener
 
         if (event.getDamager().getType() == EntityType.SNOWBALL && event.getEntity() instanceof Player) {
             final Player player = (Player) ((Projectile) event.getDamager()).getShooter();
-                if (isCooldown) {
-                    if (this.cooldowns.contains(player, "cooldown")) {
-                        long secondsLeft = ((this.cooldowns.get(player, "cooldown") / 1000) + cooldownTime) - (System.currentTimeMillis() / 1000);
-                        if (secondsLeft > 0) {
-                            if(cooldownMsgEnabled)
-                                player.sendMessage(cooldownString);
-                            event.setCancelled(true);
-                            return;
-                        } else {
-                            this.cooldowns.remove(player, "cooldown");
-                        }
+            if (isCooldown) {
+                if (this.cooldowns.contains(player, "cooldown")) {
+                    long secondsLeft = ((this.cooldowns.get(player, "cooldown") / 1000) + cooldownTime) - (System.currentTimeMillis() / 1000);
+                    if (secondsLeft > 0) {
+                        if (cooldownMsgEnabled)
+                            player.sendMessage(cooldownString);
+                        event.setCancelled(true);
+                        return;
+                    } else {
+                        this.cooldowns.remove(player, "cooldown");
                     }
-                    this.cooldowns.put(player, "cooldown", System.currentTimeMillis());
                 }
-                // if no cooldown, continue
-                Bukkit.getScheduler().scheduleSyncDelayedTask((Plugin) SnowballKB.plugin, (Runnable) new Runnable() {
-                    @Override
-                    public void run() {
-                        final Player player = (Player) event.getEntity();
-                        final Vector plrV = player.getVelocity();
-                        final Vector velocity = new Vector(plrV.getX() * horizontalModifier, plrV.getY() * verticalModifier, plrV.getZ() * horizontalModifier);
-                        player.setVelocity(velocity);
-                    }
-                }, 0L);
+                this.cooldowns.put(player, "cooldown", System.currentTimeMillis());
+            }
+            // if no cooldown, continue
+            Bukkit.getScheduler().scheduleSyncDelayedTask(SnowballKB.plugin, () -> {
+                final Player player1 = (Player) event.getEntity();
+                final Vector plrV = player1.getVelocity();
+                final Vector velocity = new Vector(plrV.getX() * horizontalModifier, plrV.getY() * verticalModifier, plrV.getZ() * horizontalModifier);
+                player1.setVelocity(velocity);
+            }, 0L);
 
         }
     }
